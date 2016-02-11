@@ -4,7 +4,7 @@ pacman::p_load_gh("efbbrown/make")
 
 data <- make("data/data", function() {
   
-  n <- 1000
+  n <- 700
   
   set.seed(100)
   
