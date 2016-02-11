@@ -50,7 +50,7 @@ draw_plot = function(data, parent, marginRatio) {
     x_normal.domain(d3.extent(data, function(d) { return d.x_normal; }));
     y_normal.domain(d3.extent(data, function(d) { return d.y_normal; }));
 
-    var pointOpacity = 0.7;
+    var pointOpacity = 0.4;
     
     var points = chart.selectAll(".point")
       .data(table)
@@ -60,6 +60,7 @@ draw_plot = function(data, parent, marginRatio) {
       .attr("cy", function(d) { return y_normal(d.y_normal); })
       .attr("r", 3)
       .style("fill", "#222" )
+      .style("fill-opacity", pointOpacity)
       .transition()
       .delay( function(d, i) {
         return 500 + 50 * i;
@@ -152,3 +153,10 @@ objConvert = function(d) {
   return(o);
   
 };
+
+$(document).ready(function(){
+    $('.container-menu li').click(function() {
+        $(this).siblings('li').removeClass('active');
+        $(this).addClass('active');
+    });
+});
