@@ -9,8 +9,8 @@ var parentWidth = g3.elementWidth(parentDiv),
     parentHeight = g3.elementHeight(parentDiv);
 
 var margin = {
-  top: parentHeight * 0.05, right: parentWidth * 0.2,
-  bottom: parentHeight * 0.05, left: parentWidth * 0.2
+  top: parentHeight * 0.05, right: parentWidth * 0.1,
+  bottom: parentHeight * 0.05, left: parentWidth * 0.1
 };
 
 var width = g3.chartLength(parentWidth, margin.left, margin.right),
