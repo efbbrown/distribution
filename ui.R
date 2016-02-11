@@ -9,14 +9,12 @@ library(shiny)
 
 shinyUI(fluidPage(
   
-  tags$h3("Eugene Brown"),
+  tags$h3(tags$div("Distribution")),
 
-  fluidRow(class = "plot-row",
-           column(12,
-                  tags$div(id = "plot"))
-           ),
+  tags$div(id = "plot"),
   
-  tags$ul(id = "dist_list",
+  tags$div(class = "container-menu",
+    tags$ul(id = "dist_list",
             tags$li(id = "tri", "Triangular"),
             tags$li(id = "Normal", "Normal"),
             tags$li(id = "logis", "Logistic"),
@@ -24,7 +22,8 @@ shinyUI(fluidPage(
             tags$li(id = "lognormal", "Lognormal"),
             tags$li(id = "Gamma", "Gamma")
             
-          ),
+    )
+  ),
   
   # Links to external files
   tags$head(tags$link(href="css/styles.css", rel="stylesheet")),
