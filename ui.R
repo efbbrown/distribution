@@ -61,7 +61,7 @@ shinyUI(fluidPage(
   
   # Links to external files
   tags$head(
-    tags$title('Probability Distributions'),
+    tags$title("Eugene Brown's Portfolio"),
     HTML('<meta http-equiv="X-UA-Compatible" content="IE=edge">'),
     tags$link(rel="icon", href="imgs/favicon.ico"),
     tags$link(href="css/styles.css", rel="stylesheet"),
