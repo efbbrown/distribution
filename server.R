@@ -5,8 +5,18 @@
 # http://shiny.rstudio.com
 #
 
-library(shiny)
+pacman::p_load(shiny, jsonlite)
 
-shinyServer(function(input, output) {
+data <- readRDS("data/data.rds")
 
+shinyServer(function(input, output, session) {
+
+  observe({
+    
+    json <- toJSON(data)
+    
+    session$sendCustomMessage(type = "myCallbackHandler", json)
+    
+  })
+  
 })
