@@ -50,7 +50,29 @@ draw_plot = function(data, parent, marginRatio) {
     x_normal.domain(d3.extent(data, function(d) { return d.x_normal; }));
     y_normal.domain(d3.extent(data, function(d) { return d.y_normal; }));
 
-    var pointOpacity = 0.4;
+    var lineOpacity = 0.6,
+        pointOpacity = 0.4;
+        
+    var zero_y = chart.append("line")
+        .attr("y1", y_normal(0))
+        .attr("x1", 0)
+        .attr("y2", y_normal(0))
+        .attr("x2", width)
+        .style("stroke-width", 2)
+        .style("stroke", "#ccc")
+        .style("strokeOpacity", lineOpacity)
+        .style("fill", "none");
+    
+    var zero_x = chart.append("line")
+        .attr("id", "zero_x")
+        .attr("x1", x_normal(0))
+        .attr("y1", 0)
+        .attr("x2", x_normal(0))
+        .attr("y2", height)
+        .style("stroke-width", 2)
+        .style("stroke", "#ccc")
+        .style("strokeOpacity", lineOpacity)
+        .style("fill", "none");
     
     var points = chart.selectAll(".point")
       .data(table)
@@ -63,7 +85,7 @@ draw_plot = function(data, parent, marginRatio) {
       .style("fill-opacity", pointOpacity)
       .transition()
       .delay( function(d, i) {
-        return 500 + 50 * i;
+        return 500 + 50 * d.fall_order;
       })
       .duration(2000)
       .attr("cy", function(d) { return y_normal(d.y_d_normal); });
@@ -71,6 +93,8 @@ draw_plot = function(data, parent, marginRatio) {
   };
   
   layers(chart, margin);
+  
+  d3.select(window).on("resize", resize);
   
 };
 
@@ -108,11 +132,7 @@ dist = function(event) {
   var x_var = "x_" + event.data.distribution,
       y_var = "y_" + event.data.distribution,
       y_d_var = "y_d_" + event.data.distribution;
-  /*
-  var x_var = event.data.x_var,
-      y_var = event.data.y_var,
-      y_d_var = event.data.y_d_var;
-  */
+
   var parentDiv = d3.select("#plot");
   
   var parentHeight = g3.elementHeight(parentDiv);
@@ -125,14 +145,21 @@ dist = function(event) {
   x.domain(d3.extent(table, function(d) { return d[x_var]; }));
   y.domain(d3.extent(table, function(d) { return d[y_var]; }));
   
-  var points = d3.selectAll(".point");
+  var points = d3.selectAll(".point"),
+      zero_x = d3.select("#zero_x");
+        
+  zero_x.transition().duration(2000)
+      .attr("x1", x(0))
+      .attr("y1", 0)
+      .attr("x2", x(0))
+      .attr("y2", height);
   
   points.transition().duration(2000)
     .attr("cx", function(d) { return x(d[x_var]); })
     .attr("cy", function(d) { return y(d[y_var]); })
     .transition()
     .delay( function(d, i) {
-      return 2000 + 20 * i;
+      return 2000 + 20 * d.fall_order;
     })
     .duration(2000)
     .attr("cy", function(d) { return y(d[y_d_var]); });
@@ -151,6 +178,17 @@ objConvert = function(d) {
   }
   
   return(o);
+  
+};
+
+resize = function() {
+  
+  width = parseInt(d3.select("#plot").style("width"), 10);
+  
+  width = width - margin.left - margin.right;
+  
+  x.range([0, width]),
+  x_normal.range([0, width]);
   
 };
 
