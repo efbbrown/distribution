@@ -5,8 +5,18 @@
 # http://shiny.rstudio.com
 #
 
-library(shiny)
+pacman::p_load(shiny, jsonlite)
 
-shinyServer(function(input, output) {
+source("make_data.R")
 
+shinyServer(function(input, output, session) {
+
+  observe({
+    
+    json <- toJSON(data)
+    
+    session$sendCustomMessage(type = "myCallbackHandler", json)
+    
+  })
+  
 })

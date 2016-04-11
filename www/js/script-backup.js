@@ -21,9 +21,9 @@ var x = g3.scale({type: "linear", min: 0, max: width, space: 0}),
 var y = g3.scale({type: "linear", min: height, max: 0}),
     y_normal = g3.scale({type: "linear", min: height, max: 0});
 
-Shiny.addCustomMessageHandler("myCallbackHandler", function(json) {
+d3.csv("data/data.csv", function(data) {
   
-  table = json;
+  table = data.map(objConvert);
   
   draw_plot(table, parent);
   
@@ -163,6 +163,21 @@ dist = function(event) {
     })
     .duration(2000)
     .attr("cy", function(d) { return y(d[y_d_var]); });
+  
+};
+
+objConvert = function(d) {
+
+  var k = Object.keys(d);
+  
+  var o = {};
+  
+  for (i = 0; i < k.length; i++) {
+    currentKey = k[i];
+    o[currentKey] = +d[currentKey];
+  }
+  
+  return(o);
   
 };
 

@@ -2,15 +2,15 @@ pacman::p_load(data.table, magrittr, EnvStats)
 
 pacman::p_load_gh("efbbrown/make")
 
-data <- make("data/data", function() {
+data <- make_once("data/data", function() {
   
-  n <- 700
+  n <- 500
   
   set.seed(100)
   
   var_gen <- function(r_gen, d_gen, n, dist_name, ...) {
     
-    x <- r_gen(n, ...)
+    x <- r_gen(n, ...) %>% sort
     
     y <- d_gen(x, ...)
     
@@ -44,8 +44,10 @@ data <- make("data/data", function() {
   
   data <- round(data, digits = 4)
   
+  data$fall_order <- sample(1:n, n)
+  
   return(data)
   
-}, max.age = as.difftime(10, units = "secs"))
+})
 
-write.csv(data, "www/data/data.csv", row.names = F)
+# write.csv(data, "www/data/data.csv", row.names = F)

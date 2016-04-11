@@ -45,7 +45,14 @@ shinyUI(fluidPage(
   
   # tags$h3(tags$div("Distribution")),
 
-  tags$div(id = "plot"),
+  tags$div(id = "plot",
+           tags$div(id = "general_info"
+                    # tags$h3("Distribution")
+                    # tags$p("In forecasting it can be useful to understand the probability distribution of the phenomena being modelled. Knowledge of the distribution of a variable allows the properties of that variable to be more specifically accounted for, increasing the accuracy of the model.")
+                    )
+           ),
+  
+  
   
   tags$div(class = "container-menu",
     tags$ul(id = "dist_list",
@@ -61,7 +68,7 @@ shinyUI(fluidPage(
   
   # Links to external files
   tags$head(
-    tags$title('Probability Distributions'),
+    tags$title("Eugene Brown's Portfolio"),
     HTML('<meta http-equiv="X-UA-Compatible" content="IE=edge">'),
     tags$link(rel="icon", href="imgs/favicon.ico"),
     tags$link(href="css/styles.css", rel="stylesheet"),
