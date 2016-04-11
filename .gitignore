@@ -2,3 +2,4 @@
 *.rds
 .Rhistory
 .Rdata
+.Rproj.user
