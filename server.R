@@ -7,7 +7,7 @@
 
 pacman::p_load(shiny, jsonlite)
 
-data <- readRDS("data/data.rds")
+source("make_data.R")
 
 shinyServer(function(input, output, session) {
 
