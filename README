@@ -1,0 +1,5 @@
+This visualisation is live at www.genebrown.info/shiny/distribution/
+
+The data is generated in the R script make_data.R.
+
+The d3 code that renders the vis is in the www/js/script.js file.
