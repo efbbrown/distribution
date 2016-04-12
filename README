@@ -1,5 +1,7 @@
 This visualisation is live at www.genebrown.info/shiny/distribution/
 
+It uses the R shiny web app framework, rendering html from the ui.R file and passing the R generated data to the client through the server.R file.
+
 The data is generated in the R script make_data.R.
 
 The d3 code that renders the vis is in the www/js/script.js file.
