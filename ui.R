@@ -78,7 +78,7 @@ shinyUI(fluidPage(
   
   tags$body(
     tags$script(src='https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.0.1/spin.min.js', charset="utf-8"),
-    tags$script(src="js/g3/g3.min.js", charset="utf-8"),
+    tags$script(src="js/g3/ebrown.g3.js", charset="utf-8"),
     tags$script(src="//d3js.org/d3.v3.min.js", charset="utf-8"),
     tags$script(src="js/script.js")
   )
