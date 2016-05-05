@@ -54,6 +54,7 @@ draw_plot = function(data, parent, marginRatio) {
         pointOpacity = 0.4;
         
     var zero_y = chart.append("line")
+        .attr("id", "zero_y")
         .attr("y1", y_normal(0))
         .attr("x1", 0)
         .attr("y2", y_normal(0))
