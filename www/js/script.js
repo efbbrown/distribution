@@ -1,8 +1,128 @@
+var parentId = "plot", parent = "#" + parentId;
+/*------------------------------------------*/
+/*            Append Containers             */
+/*------------------------------------------*/
+
+dims = {
+  navbarHeight: 52,
+  windowOrientation: "landscape",
+  outerCon: {
+    maxRatio: 1.35,
+    mainCon: {
+      chartCon: {
+        
+      },
+      buttonsCon: {
+        
+      }
+    },
+    infoCon: {
+      info1Con: {
+        
+      }
+    }
+  }
+};
+
+function appendContainers(dims) {
+  
+  var windowWidth = window.innerWidth,
+      windowHeight = window.innerHeight - dims.navbarHeight,
+      windowRatio = windowWidth/windowHeight,
+      minWidthHeight = Math.min(windowWidth, windowHeight);
+  
+  if (windowRatio > dims.outerCon.maxRatio) {
+    dims.windowOrientation = "landscape";
+    dims.outerCon.width = Math.min(windowWidth, minWidthHeight * dims.outerCon.maxRatio);
+  } else {
+    dims.windowOrientation = "portrait";
+    dims.outerCon.width = windowWidth;
+  }
+  
+  dims.outerCon.styles = {
+    "width": dims.outerCon.width + "px",
+    "min-height": windowHeight + "px",
+    "margin": "auto"//,
+    //"left": (windowWidth - containerWidth)/2 + "px"
+  };
+  
+  if (dims.windowOrientation === "landscape") {
+    dims.outerCon.mainCon.styles = {
+      "width": dims.outerCon.styles.width * 0.7,
+      "height": windowHeight + "px"
+    };
+    dims.outerCon.infoCon.styles = {
+      "width": dims.outerCon.styles.width * 0.29,
+      "height": windowHeight + "px"
+    };
+  } else {
+    dims.outerCon.mainCon.styles = {
+      "width": dims.outerCon.styles.width,
+      "height": Math.max(dims.outerCon.styles.width, dims.outerCon.styles.width) + "px"
+    };
+    dims.outerCon.infoCon.styles = {
+      "width": dims.outerCon.styles.width
+    };
+  }
+
+}
+
+/*------------------------------------------*/
+/*            Spinner                       */
+/*------------------------------------------*/
+
+// loader settings
+var opts = {
+  lines: 9, // The number of lines to draw
+  length: 9, // The length of each line
+  width: 5, // The line thickness
+  radius: 14, // The radius of the inner circle
+  color: '#666', // #rgb or #rrggbb or array of colors
+  speed: 1.3, // Rounds per second
+  trail: 40, // Afterglow percentage
+  className: 'spinner', // The CSS class to assign to the spinner
+};
+
+var target = document.getElementById(parentId);
+
+// callback function wrapped for loader in 'init' function
+function init() {
+    // trigger loader
+    var spinner = new Spinner(opts).spin(target);
+    
+    Shiny.addCustomMessageHandler("myCallbackHandler", function(json) {
+  
+      table = json;
+      
+      // stop spin.js loader
+      spinner.stop();
+      
+      $("#Normal").attr("class", "active");
+      
+      draw_plot(table, parent);
+      
+      $("#button").on("click", function() {
+        console.log("clicked");
+      });
+      
+      $("#binom").click({distribution: "binom"}, dist);
+      $("#poisson").click({distribution: "poisson"}, dist);
+      $("#Normal").click({distribution: "normal"}, dist);
+      $("#logis").click({distribution: "logis"}, dist);
+      $("#Exponential").click({distribution: "exp"}, dist);
+      $("#lognormal").click({distribution: "lognormal"}, dist);
+      $("#Gamma").click({distribution: "gamma"}, dist);
+      
+    });
+} 
+
+init();
+
+/*############################*/
+
 var table = [],
     height = [];
     
-var parent = "#plot";
-
 var parentDiv = d3.select(parent);
   
 var parentWidth = g3.elementWidth(parentDiv),
@@ -20,25 +140,6 @@ var x = g3.scale({type: "linear", min: 0, max: width, space: 0}),
     x_normal = g3.scale({type: "linear", min: 0, max: width, space: 0});
 var y = g3.scale({type: "linear", min: height, max: 0}),
     y_normal = g3.scale({type: "linear", min: height, max: 0});
-
-Shiny.addCustomMessageHandler("myCallbackHandler", function(json) {
-  
-  table = json;
-  
-  draw_plot(table, parent);
-  
-  $("#button").on("click", function() {
-    console.log("clicked");
-  });
-  
-  $("#tri").click({distribution: "tri"}, dist);
-  $("#Normal").click({distribution: "normal"}, dist);
-  $("#logis").click({distribution: "logis"}, dist);
-  $("#Exponential").click({distribution: "exp"}, dist);
-  $("#lognormal").click({distribution: "lognormal"}, dist);
-  $("#Gamma").click({distribution: "gamma"}, dist);
-  
-});
 
 draw_plot = function(data, parent, marginRatio) {
 
@@ -126,13 +227,15 @@ normal_dist = function() {
     .attr("cx", function(d) { return x_normal(d.x_normal); })
     .attr("cy", function(d) { return y_normal(d.y_d_normal); });
   
-}
+};
 
 dist = function(event) {
   
-  var x_var = "x_" + event.data.distribution,
-      y_var = "y_" + event.data.distribution,
-      y_d_var = "y_d_" + event.data.distribution;
+  var distr = event.data.distribution;
+  
+  var x_var = "x_" + distr,
+      y_var = "y_" + distr,
+      y_d_var = "y_d_" + distr;
 
   var parentDiv = d3.select("#plot");
   
@@ -143,7 +246,16 @@ dist = function(event) {
     bottom: 0, left: 0
   };
   
-  x.domain(d3.extent(table, function(d) { return d[x_var]; }));
+  if (distr === "binom") {
+    x.domain([0, 60]);
+  } else if (distr === "poisson") {
+    x.domain([Math.min(0, d3.min(table, function(d) { return d[x_var]; })),
+            d3.max(table, function(d) { return d[x_var]; }) * 1.5
+            ]);
+  } else {
+    x.domain(d3.extent(table, function(d) { return d[x_var]; }));
+  }
+  
   y.domain(d3.extent(table, function(d) { return d[y_var]; }));
   
   var points = d3.selectAll(".point"),

@@ -56,12 +56,13 @@ shinyUI(fluidPage(
   
   tags$div(class = "container-menu",
     tags$ul(id = "dist_list",
-            tags$li(id = "tri", "Triangular"),
             tags$li(id = "Normal", "Normal"),
             tags$li(id = "logis", "Logistic"),
             tags$li(id = "Exponential", "Exponential"),
             tags$li(id = "lognormal", "Lognormal"),
-            tags$li(id = "Gamma", "Gamma")
+            tags$li(id = "Gamma", "Gamma"),
+            tags$li(id = "poisson", "Poisson"),
+            tags$li(id = "binom", "Binomial")
             
     )
   ),
@@ -76,7 +77,8 @@ shinyUI(fluidPage(
   ),
   
   tags$body(
-    tags$script(src="js/g3/ebrown.g3.js", charset="utf-8"),
+    tags$script(src='https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.0.1/spin.min.js', charset="utf-8"),
+    tags$script(src="js/g3/g3.min.js", charset="utf-8"),
     tags$script(src="//d3js.org/d3.v3.min.js", charset="utf-8"),
     tags$script(src="js/script.js")
   )
