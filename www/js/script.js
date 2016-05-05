@@ -85,39 +85,6 @@ var opts = {
 
 var target = document.getElementById(parentId);
 
-// callback function wrapped for loader in 'init' function
-function init() {
-    // trigger loader
-    var spinner = new Spinner(opts).spin(target);
-    
-    Shiny.addCustomMessageHandler("myCallbackHandler", function(json) {
-  
-      table = json;
-      
-      // stop spin.js loader
-      spinner.stop();
-      
-      $("#Normal").attr("class", "active");
-      
-      draw_plot(table, parent);
-      
-      $("#button").on("click", function() {
-        console.log("clicked");
-      });
-      
-      $("#binom").click({distribution: "binom"}, dist);
-      $("#poisson").click({distribution: "poisson"}, dist);
-      $("#Normal").click({distribution: "normal"}, dist);
-      $("#logis").click({distribution: "logis"}, dist);
-      $("#Exponential").click({distribution: "exp"}, dist);
-      $("#lognormal").click({distribution: "lognormal"}, dist);
-      $("#Gamma").click({distribution: "gamma"}, dist);
-      
-    });
-} 
-
-init();
-
 /*############################*/
 
 var table = [],
@@ -296,3 +263,36 @@ $(document).ready(function(){
         $(this).addClass('active');
     });
 });
+
+// callback function wrapped for loader in 'init' function
+function init() {
+    // trigger loader
+    var spinner = new Spinner(opts).spin(target);
+    
+    Shiny.addCustomMessageHandler("myCallbackHandler", function(json) {
+  
+      table = json;
+      
+      // stop spin.js loader
+      spinner.stop();
+      
+      $("#Normal").attr("class", "active");
+      
+      draw_plot(table, parent);
+      
+      $("#button").on("click", function() {
+        console.log("clicked");
+      });
+      
+      $("#binom").click({distribution: "binom"}, dist);
+      $("#poisson").click({distribution: "poisson"}, dist);
+      $("#Normal").click({distribution: "normal"}, dist);
+      $("#logis").click({distribution: "logis"}, dist);
+      $("#Exponential").click({distribution: "exp"}, dist);
+      $("#lognormal").click({distribution: "lognormal"}, dist);
+      $("#Gamma").click({distribution: "gamma"}, dist);
+      
+    });
+} 
+
+init();
